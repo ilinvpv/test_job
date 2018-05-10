@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20180510 13:54:17.213" generator="Robot 3.0.4 (Python 3.5.2 on linux)">
+<suite name="Test Api" source="/home/illinv/work/testing/tests/test_api.robot" id="s1">
+<test name="Test connect of the service to the client" id="s1-t1">
+<kw type="setup" library="resource_test_api" name="Setup Test Api">
+<kw library="ApiLibrary" name="Open Session">
+<doc>Открывает сессию</doc>
+<msg timestamp="20180510 13:54:17.321" level="DEBUG">Test timeout 2 minutes active. 119.999 seconds left.</msg>
+<status starttime="20180510 13:54:17.321" status="PASS" endtime="20180510 13:54:17.322"></status>
+</kw>
+<kw library="DbLibrary" name="Create Connection">
+<doc>Создает соединение с БД</doc>
+<msg timestamp="20180510 13:54:17.322" level="DEBUG">Test timeout 2 minutes active. 119.998 seconds left.</msg>
+<status starttime="20180510 13:54:17.322" status="PASS" endtime="20180510 13:54:17.322"></status>
+</kw>
+<status starttime="20180510 13:54:17.321" status="PASS" endtime="20180510 13:54:17.322"></status>
+</kw>
+<kw library="DbLibrary" name="Get Or Create Client With Positive Balance">
+<assign>
+<var>${client}</var>
+</assign>
+<msg timestamp="20180510 13:54:17.322" level="DEBUG">Test timeout 2 minutes active. 119.997 seconds left.</msg>
+<msg timestamp="20180510 13:54:17.323" level="INFO">${client} = {'client_id': 4, 'client_name': 'Foma Bezrukov', 'client_balance': 3.3}</msg>
+<status starttime="20180510 13:54:17.322" status="PASS" endtime="20180510 13:54:17.323"></status>
+</kw>
+<kw library="BuiltIn" name="Set Variable">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${client['client_balance']}</arg>
+</arguments>
+<assign>
+<var>${old_balance}</var>
+</assign>
+<msg timestamp="20180510 13:54:17.323" level="DEBUG">Test timeout 2 minutes active. 119.996 seconds left.</msg>
+<msg timestamp="20180510 13:54:17.324" level="INFO">${old_balance} = 3.3</msg>
+<status starttime="20180510 13:54:17.323" status="PASS" endtime="20180510 13:54:17.324"></status>
+</kw>
+<kw library="BuiltIn" name="Set Variable">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${client['client_id']}</arg>
+</arguments>
+<assign>
+<var>${client_id}</var>
+</assign>
+<msg timestamp="20180510 13:54:17.324" level="DEBUG">Test timeout 2 minutes active. 119.996 seconds left.</msg>
+<msg timestamp="20180510 13:54:17.324" level="INFO">${client_id} = 4</msg>
+<status starttime="20180510 13:54:17.324" status="PASS" endtime="20180510 13:54:17.324"></status>
+</kw>
+<kw library="ApiLibrary" name="Get Connected Services">
+<doc>Выполняет запрос на получение услуг клиента. Возвращает список         подключенных клиенту услуг</doc>
+<arguments>
+<arg>${client['client_id']}</arg>
+</arguments>
+<assign>
+<var>${connected_services}</var>
+</assign>
+<msg timestamp="20180510 13:54:17.325" level="DEBUG">Test timeout 2 minutes active. 119.995 seconds left.</msg>
+<msg timestamp="20180510 13:54:17.328" level="DEBUG">Starting new HTTP connection (1): localhost</msg>
+<msg timestamp="20180510 13:54:17.331" level="DEBUG">http://localhost:5000 "POST /client/services HTTP/1.1" 200 266</msg>
+<msg timestamp="20180510 13:54:17.332" level="DEBUG">url: http://localhost:5000/client/services
+
+request headers: {'User-Agent': 'python-requests/2.18.4', 'Content-Length': '16', 'Connection': 'keep-alive', 'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Type': 'application/json'}
+
+request body: b'{"client_id": 4}'
+
+status code: 200 
+
+response headers: {'Date': 'Thu, 10 May 2018 09:54:17 GMT', 'Server': 'Werkzeug/0.14.1 Python/2.7.12', 'Content-Length': '266', 'Content-Type': 'application/json'}
+
+response text: {
+  "count": 3, 
+  "items": [
+    {
+      "cost": 1.2, 
+      "id": 1, 
+      "name": "Service #1"
+    }, 
+    {
+      "cost": 0.35, 
+      "id": 2, 
+      "name": "Service #2"
+    }, 
+    {
+      "cost": 0.15, 
+      "id": 3, 
+      "name": "Service #3"
+    }
+  ]
+}</msg>
+<msg timestamp="20180510 13:54:17.332" level="INFO">${connected_services} = [{'cost': 1.2, 'name': 'Service #1', 'id': 1}, {'cost': 0.35, 'name': 'Service #2', 'id': 2}, {'cost': 0.15, 'name': 'Service #3', 'id': 3}]</msg>
+<status starttime="20180510 13:54:17.324" status="PASS" endtime="20180510 13:54:17.332"></status>
+</kw>
+<kw library="ApiLibrary" name="Get All Services">
+<doc>Выполняет запрос на получение всех услуг в системе         Возвращает все услуги, в виде списка словарей</doc>
+<assign>
+<var>${all_services}</var>
+</assign>
+<msg timestamp="20180510 13:54:17.332" level="DEBUG">Test timeout 2 minutes active. 119.987 seconds left.</msg>
+<msg timestamp="20180510 13:54:17.335" level="DEBUG">Resetting dropped connection: localhost</msg>
+<msg timestamp="20180510 13:54:17.339" level="DEBUG">http://localhost:5000 "GET /services HTTP/1.1" 200 422</msg>
+<msg timestamp="20180510 13:54:17.339" level="DEBUG">url: http://localhost:5000/services 
+
+ request headers: {'User-Agent': 'python-requests/2.18.4', 'Accept': '*/*', 'Connection': 'keep-alive', 'Accept-Encoding': 'gzip, deflate', 'Content-Type': 'application/json'}
+
+status code: 200 
+
+ response headers: {'Date': 'Thu, 10 May 2018 09:54:17 GMT', 'Server': 'Werkzeug/0.14.1 Python/2.7.12', 'Content-Length': '422', 'Content-Type': 'application/json'}
+
+response text: {
+  "count": 5, 
+  "items": [
+    {
+      "cost": 1.2, 
+      "id": 1, 
+      "name": "Service #1"
+    }, 
+    {
+      "cost": 0.35, 
+      "id": 2, 
+      "name": "Service #2"
+    }, 
+    {
+      "cost": 0.15, 
+      "id": 3, 
+      "name": "Service #3"
+    }, 
+    {
+      "cost": 0.15, 
+      "id": 4, 
+      "name": "Service #4"
+    }, 
+    {
+      "cost": 0.05, 
+      "id": 5, 
+      "name": "Service #5"
+    }
+  ]
+}</msg>
+<msg timestamp="20180510 13:54:17.340" level="INFO">${all_services} = [{'cost': 1.2, 'name': 'Service #1', 'id': 1}, {'cost': 0.35, 'name': 'Service #2', 'id': 2}, {'cost': 0.15, 'name': 'Service #3', 'id': 3}, {'cost': 0.15, 'name': 'Service #4', 'id': 4}, {'cost': 0.0...</msg>
+<status starttime="20180510 13:54:17.332" status="PASS" endtime="20180510 13:54:17.340"></status>
+</kw>
+<kw library="ApiLibrary" name="Get Unconnected Service">
+<doc>Метод возвращает первый элемент, который есть в списке all_service</doc>
+<arguments>
+<arg>${connected_services}</arg>
+<arg>${all_services}</arg>
+</arguments>
+<assign>
+<var>${available_service}</var>
+</assign>
+<msg timestamp="20180510 13:54:17.341" level="DEBUG">Test timeout 2 minutes active. 119.979 seconds left.</msg>
+<msg timestamp="20180510 13:54:17.341" level="INFO">${available_service} = {'cost': 0.15, 'name': 'Service #4', 'id': 4}</msg>
+<status starttime="20180510 13:54:17.340" status="PASS" endtime="20180510 13:54:17.341"></status>
+</kw>
+<kw library="ApiLibrary" name="Connect Service To Client">
+<doc>Добавляет клиенту услугу по ее id</doc>
+<arguments>
+<arg>${client['client_id']}</arg>
+<arg>${available_service['id']}</arg>
+</arguments>
+<msg timestamp="20180510 13:54:17.342" level="DEBUG">Test timeout 2 minutes active. 119.978 seconds left.</msg>
+<msg timestamp="20180510 13:54:17.344" level="DEBUG">Resetting dropped connection: localhost</msg>
+<msg timestamp="20180510 13:54:17.349" level="DEBUG">http://localhost:5000 "POST /client/add_service HTTP/1.1" 202 10</msg>
+<msg timestamp="20180510 13:54:17.350" level="DEBUG">url: http://localhost:5000/client/add_service
+
+request headers: {'User-Agent': 'python-requests/2.18.4', 'Content-Length': '33', 'Connection': 'keep-alive', 'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Type': 'application/json'}
+
+request body: b'{"client_id": 4, "service_id": 4}'
+
+status code: 202 
+
+response headers: {'Date': 'Thu, 10 May 2018 09:54:17 GMT', 'Server': 'Werkzeug/0.14.1 Python/2.7.12', 'Content-Length': '10', 'Content-Type': 'text/html; charset=utf-8'}
+
+response text: Processing</msg>
+<status starttime="20180510 13:54:17.341" status="PASS" endtime="20180510 13:54:17.350"></status>
+</kw>
+<kw library="BuiltIn" name="Wait Until Keyword Succeeds">
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<arguments>
+<arg>1 min</arg>
+<arg>5 sec</arg>
+<arg>ApiLibrary.Check Connection Of Service</arg>
+<arg>${client['client_id']}</arg>
+<arg>${available_service['id']}</arg>
+</arguments>
+<kw library="ApiLibrary" name="Check Connection Of Service">
+<doc>Метод проверяет подключена ли переданная в аргументах услуга         переданному в аргументах клиенту.</doc>
+<arguments>
+<arg>${client['client_id']}</arg>
+<arg>${available_service['id']}</arg>
+</arguments>
+<msg timestamp="20180510 13:54:17.351" level="DEBUG">Test timeout 2 minutes active. 119.969 seconds left.</msg>
+<msg timestamp="20180510 13:54:17.354" level="DEBUG">Resetting dropped connection: localhost</msg>
+<msg timestamp="20180510 13:54:17.358" level="DEBUG">http://localhost:5000 "POST /client/services HTTP/1.1" 200 266</msg>
+<msg timestamp="20180510 13:54:17.359" level="DEBUG">url: http://localhost:5000/client/services
+
+request headers: {'User-Agent': 'python-requests/2.18.4', 'Content-Length': '16', 'Connection': 'keep-alive', 'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Type': 'application/json'}
+
+request body: b'{"client_id": 4}'
+
+status code: 200 
+
+response headers: {'Date': 'Thu, 10 May 2018 09:54:17 GMT', 'Server': 'Werkzeug/0.14.1 Python/2.7.12', 'Content-Length': '266', 'Content-Type': 'application/json'}
+
+response text: {
+  "count": 3, 
+  "items": [
+    {
+      "cost": 1.2, 
+      "id": 1, 
+      "name": "Service #1"
+    }, 
+    {
+      "cost": 0.35, 
+      "id": 2, 
+      "name": "Service #2"
+    }, 
+    {
+      "cost": 0.15, 
+      "id": 3, 
+      "name": "Service #3"
+    }
+  ]
+}</msg>
+<msg timestamp="20180510 13:54:17.360" level="FAIL">Невозможно найти услугу с идентификатором 4 в списке подключенных</msg>
+<msg timestamp="20180510 13:54:17.360" level="DEBUG">Traceback (most recent call last):
+  File "/home/illinv/work/testing/tests/lib/ApiLibrary.py", line 130, in check_connection_of_service
+    'в списке подключенных'.format(service_id)</msg>
+<status starttime="20180510 13:54:17.351" status="FAIL" endtime="20180510 13:54:17.360"></status>
+</kw>
+<kw library="ApiLibrary" name="Check Connection Of Service">
+<doc>Метод проверяет подключена ли переданная в аргументах услуга         переданному в аргументах клиенту.</doc>
+<arguments>
+<arg>${client['client_id']}</arg>
+<arg>${available_service['id']}</arg>
+</arguments>
+<msg timestamp="20180510 13:54:22.362" level="DEBUG">Test timeout 2 minutes active. 114.958 seconds left.</msg>
+<msg timestamp="20180510 13:54:22.366" level="DEBUG">Resetting dropped connection: localhost</msg>
+<msg timestamp="20180510 13:54:22.370" level="DEBUG">http://localhost:5000 "POST /client/services HTTP/1.1" 200 344</msg>
+<msg timestamp="20180510 13:54:22.371" level="DEBUG">url: http://localhost:5000/client/services
+
+request headers: {'User-Agent': 'python-requests/2.18.4', 'Content-Length': '16', 'Connection': 'keep-alive', 'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Type': 'application/json'}
+
+request body: b'{"client_id": 4}'
+
+status code: 200 
+
+response headers: {'Date': 'Thu, 10 May 2018 09:54:22 GMT', 'Server': 'Werkzeug/0.14.1 Python/2.7.12', 'Content-Length': '344', 'Content-Type': 'application/json'}
+
+response text: {
+  "count": 4, 
+  "items": [
+    {
+      "cost": 1.2, 
+      "id": 1, 
+      "name": "Service #1"
+    }, 
+    {
+      "cost": 0.35, 
+      "id": 2, 
+      "name": "Service #2"
+    }, 
+    {
+      "cost": 0.15, 
+      "id": 3, 
+      "name": "Service #3"
+    }, 
+    {
+      "cost": 0.15, 
+      "id": 4, 
+      "name": "Service #4"
+    }
+  ]
+}</msg>
+<status starttime="20180510 13:54:22.361" status="PASS" endtime="20180510 13:54:22.371"></status>
+</kw>
+<status starttime="20180510 13:54:17.350" status="PASS" endtime="20180510 13:54:22.371"></status>
+</kw>
+<kw library="BuiltIn" name="Evaluate">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>${old_balance} - ${available_service['cost']}</arg>
+</arguments>
+<assign>
+<var>${expected_balance}</var>
+</assign>
+<msg timestamp="20180510 13:54:22.372" level="DEBUG">Test timeout 2 minutes active. 114.948 seconds left.</msg>
+<msg timestamp="20180510 13:54:22.372" level="INFO">${expected_balance} = 3.15</msg>
+<status starttime="20180510 13:54:22.371" status="PASS" endtime="20180510 13:54:22.372"></status>
+</kw>
+<kw library="DbLibrary" name="Get Client Balance">
+<arguments>
+<arg>${client_id}</arg>
+</arguments>
+<assign>
+<var>${new_balance}</var>
+</assign>
+<msg timestamp="20180510 13:54:22.373" level="DEBUG">Test timeout 2 minutes active. 114.947 seconds left.</msg>
+<msg timestamp="20180510 13:54:22.373" level="INFO">${new_balance} = 3.15</msg>
+<status starttime="20180510 13:54:22.372" status="PASS" endtime="20180510 13:54:22.373"></status>
+</kw>
+<kw library="BuiltIn" name="Should Be Equal As Numbers">
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<arguments>
+<arg>${new_balance}</arg>
+<arg>${expected_balance}</arg>
+</arguments>
+<msg timestamp="20180510 13:54:22.373" level="DEBUG">Test timeout 2 minutes active. 114.946 seconds left.</msg>
+<msg timestamp="20180510 13:54:22.374" level="DEBUG">Argument types are:
+&lt;class 'float'&gt;
+&lt;class 'float'&gt;</msg>
+<status starttime="20180510 13:54:22.373" status="PASS" endtime="20180510 13:54:22.374"></status>
+</kw>
+<kw type="teardown" library="resource_test_api" name="Teardown Test Api">
+<kw library="DbLibrary" name="Close Connection">
+<doc>Закрывает соединение с БД</doc>
+<status starttime="20180510 13:54:22.375" status="PASS" endtime="20180510 13:54:22.375"></status>
+</kw>
+<kw library="ApiLibrary" name="Close Session">
+<doc>Закрывает сессию</doc>
+<status starttime="20180510 13:54:22.375" status="PASS" endtime="20180510 13:54:22.375"></status>
+</kw>
+<status starttime="20180510 13:54:22.374" status="PASS" endtime="20180510 13:54:22.376"></status>
+</kw>
+<doc>Проверяет подключение услуги клиенту через API</doc>
+<timeout value="2 minutes"></timeout>
+<status starttime="20180510 13:54:17.320" status="PASS" critical="yes" endtime="20180510 13:54:22.376"></status>
+</test>
+<doc>Содержит тест кейс для тестирования API приложения</doc>
+<status starttime="20180510 13:54:17.214" status="PASS" endtime="20180510 13:54:22.376"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" name="Test Api" pass="1" id="s1">Test Api</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
